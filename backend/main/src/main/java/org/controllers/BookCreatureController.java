@@ -23,6 +23,7 @@ import org.controllers.DTO.bookCreature.GetBookCreatureResponse;
 import org.controllers.DTO.bookCreature.GetRingCountResponse;
 import org.controllers.DTO.bookCreature.TakeRingsFromHobbitsResponse;
 import org.controllers.DTO.bookCreature.UpdateBookCreatureRequest;
+import org.jwtProcessing.filter.JwtSecured;
 import org.services.BookCreatureService;
 
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.List;
 @Path("/book-creatures")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@JwtSecured
 public class BookCreatureController {
     @Inject private BookCreatureService bookCreatureService;
 

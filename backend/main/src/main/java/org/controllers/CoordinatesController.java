@@ -18,6 +18,7 @@ import org.controllers.DTO.coordinates.CreateCoordinatesRequest;
 import org.controllers.DTO.coordinates.CreateCoordinatesResponse;
 import org.controllers.DTO.coordinates.GetCoordinatesResponse;
 import org.controllers.DTO.coordinates.UpdateCoordinatesRequest;
+import org.jwtProcessing.filter.JwtSecured;
 import org.services.CoordinatesService;
 
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.List;
 @Path("/coordinates")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@JwtSecured
 public class CoordinatesController {
     @Inject private CoordinatesService coordinatesService;
 

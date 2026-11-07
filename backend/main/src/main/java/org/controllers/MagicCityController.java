@@ -18,6 +18,7 @@ import org.controllers.DTO.magicCity.CreateMagicCityRequest;
 import org.controllers.DTO.magicCity.CreateMagicCityResponse;
 import org.controllers.DTO.magicCity.GetMagicCityResponse;
 import org.controllers.DTO.magicCity.UpdateMagicCityRequest;
+import org.jwtProcessing.filter.JwtSecured;
 import org.services.MagicCityService;
 
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.List;
 @Path("/magic-cities")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@JwtSecured
 public class MagicCityController {
     @Inject private MagicCityService magicCityService;
 
