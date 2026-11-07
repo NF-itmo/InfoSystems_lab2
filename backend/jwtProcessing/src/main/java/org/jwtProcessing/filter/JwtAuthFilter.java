@@ -1,8 +1,7 @@
 package org.jwtProcessing.filter;
 
-import java.io.IOException;
-
 import jakarta.ws.rs.core.Cookie;
+import org.jwtProcessing.JwtConfig;
 import org.jwtProcessing.JwtVerifier;
 import org.jwtProcessing.security.JwtSecurityContext;
 import org.slf4j.Logger;
@@ -24,14 +23,12 @@ import jakarta.ws.rs.ext.Provider;
 public class JwtAuthFilter implements ContainerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthFilter.class);
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final String COOKIE_NAME = "auth_token";
+    private static final String COOKIE_NAME = System.getenv().getOrDefault("JWT_COOKIE_NAME", "AuthCookie");
 
     private final JwtVerifier jwtVerifier;
 
     public JwtAuthFilter() {
-        String issuer = System.getenv().get("JWT_ISSUER");
-        if (issuer == null) throw new RuntimeException("JWT_ISSUER environment variable is not set");
-        this.jwtVerifier = new JwtVerifier(issuer);
+        this.jwtVerifier = new JwtVerifier(JwtConfig.ISSUER);
     }
 
     @Override
@@ -41,6 +38,7 @@ public class JwtAuthFilter implements ContainerRequestFilter {
         if (authCookie == null || !authCookie.getValue().startsWith(BEARER_PREFIX)) {
             logger.warn("Missing or invalid Authorization cookie");
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                    .type("application/json")
                     .entity("{\"message\": \"Missing or invalid authorization cookie\"}")
                     .build());
             return;
@@ -60,6 +58,7 @@ public class JwtAuthFilter implements ContainerRequestFilter {
         } catch (JWTVerificationException e) {
             logger.warn("JWT verification failed: {}", e.getMessage());
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                    .type("application/json")
                     .entity("{\"message\": \"Invalid or expired token\"}")
                     .build());
         }

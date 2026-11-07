@@ -11,7 +11,7 @@ public class JwtBuilder {
     private final String issuer;
     private final Map<String, Object> customClaims = new HashMap<>();
     private final String subject;
-    private long expirationSeconds = JwtConfig.JWT_EXPIRATION_MS;
+    private long expirationSeconds = JwtConfig.JWT_EXPIRATION_SECONDS;
 
     public JwtBuilder(String issuer, String subject) {
         this.issuer = issuer;

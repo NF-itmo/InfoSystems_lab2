@@ -7,7 +7,7 @@ import java.security.Principal;
 public record JwtPrincipal(DecodedJWT decodedToken) implements Principal {
     @Override
     public String getName() {
-        return decodedToken.getClaim("uid").asString();
+        return decodedToken.getSubject();
     }
     public int getUid() {
         return decodedToken.getClaim("uid").asInt();

@@ -1,12 +1,17 @@
 package org.jwtProcessing;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@ApplicationScoped
 public class StrictJwtBuilderFabric {
     private static final Logger logger = LoggerFactory.getLogger(StrictJwtBuilderFabric.class);
     private final String issuer;
 
+    public StrictJwtBuilderFabric() {
+        this(JwtConfig.ISSUER);
+    }
     public StrictJwtBuilderFabric(String issuer) {
         this.issuer = issuer;
     }
