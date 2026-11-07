@@ -12,4 +12,8 @@ public record JwtPrincipal(DecodedJWT decodedToken) implements Principal {
     public int getUid() {
         return decodedToken.getClaim("uid").asInt();
     }
+
+    public String getRole() {
+        return decodedToken.getClaim("role").asString();
+    }
 }

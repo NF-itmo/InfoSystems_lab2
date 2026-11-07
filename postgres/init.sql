@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS Users (
     id SERIAL PRIMARY KEY,
 
     username VARCHAR(60) NOT NULL UNIQUE,
-    password_hash VARCHAR(60) NOT NULL
+    password_hash VARCHAR(60) NOT NULL,
+    role VARCHAR(5) NOT NULL CHECK (role IN ('USER', 'ADMIN'))
 );
 
 CREATE TABLE IF NOT EXISTS Coordinates (

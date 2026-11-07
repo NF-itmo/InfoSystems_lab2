@@ -9,6 +9,7 @@ import org.exceptions.ConflictException;
 import org.exceptions.UnauthorizedException;
 import org.jwtProcessing.StrictJwtBuilderFabric;
 import org.models.User;
+import org.models.UserRole;
 import org.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
@@ -18,8 +19,10 @@ public class AuthService {
     private UserRepository userRepository;
     @Inject
     private StrictJwtBuilderFabric jwtBuilderFabric;
-    @Inject @ConfigProperty(name = "auth.invite-code")
-    private String inviteCode;
+    @Inject @ConfigProperty(name = "auth.user-invite-code")
+    private String userInviteCode;
+    @Inject @ConfigProperty(name = "auth.admin-invite-code")
+    private String adminInviteCode;
 
     @Transactional
     public String login(final String login, final String password) throws UnauthorizedException {
@@ -32,6 +35,7 @@ public class AuthService {
 
         return jwtBuilderFabric.newTokenBuilder(user.getUsername())
                 .addClaim("uid", user.getId())
+                .addClaim("role", user.getRole().name())
                 .build();
     }
 
@@ -41,9 +45,7 @@ public class AuthService {
             final String password,
             final String inviteCode
     ) throws BadRequestException, ConflictException {
-        if (!this.inviteCode.equals(inviteCode)) {
-            throw new BadRequestException("Invalid invite code");
-        }
+        UserRole role = resolveRole(inviteCode);
         if (userRepository.findByUsername(login).isPresent()) {
             throw new ConflictException("User already exists");
         }
@@ -54,11 +56,24 @@ public class AuthService {
                 User.builder()
                         .username(login)
                         .password(hashedPassword)
+                        .role(role)
                         .build()
         );
 
         return jwtBuilderFabric.newTokenBuilder(user.getUsername())
                 .addClaim("uid", user.getId())
+                .addClaim("role", user.getRole().name())
                 .build();
+    }
+
+    private UserRole resolveRole(String inviteCode) {
+        if (adminInviteCode.equals(inviteCode)) {
+            return UserRole.ADMIN;
+        }
+        if (userInviteCode.equals(inviteCode)) {
+            return UserRole.USER;
+        }
+
+        throw new BadRequestException("Invalid invite code");
     }
 }
