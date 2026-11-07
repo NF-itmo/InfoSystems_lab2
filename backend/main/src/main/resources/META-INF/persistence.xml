@@ -14,6 +14,7 @@
         <class>org.models.Coordinate</class>
         <class>org.models.MagicCity</class>
         <class>org.models.Ring</class>
+        <class>org.models.User</class>
 
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

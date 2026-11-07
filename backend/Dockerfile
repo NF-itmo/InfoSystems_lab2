@@ -5,6 +5,7 @@ COPY .mvn .mvn
 COPY pom.xml ./
 
 COPY main main
+COPY jwtProcessing jwtProcessing
 
 RUN --mount=type=cache,target=/root/.m2,sharing=locked \
     ./mvnw -B -nsu dependency:go-offline
