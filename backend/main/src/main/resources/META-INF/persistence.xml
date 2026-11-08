@@ -15,6 +15,7 @@
         <class>org.models.MagicCity</class>
         <class>org.models.Ring</class>
         <class>org.models.User</class>
+        <class>org.models.ImportOperation</class>
 
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

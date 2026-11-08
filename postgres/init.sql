@@ -12,6 +12,14 @@ CREATE TABLE IF NOT EXISTS Users (
     role VARCHAR(5) NOT NULL CHECK (role IN ('USER', 'ADMIN'))
 );
 
+CREATE TABLE IF NOT EXISTS ImportOperation (
+    id SERIAL PRIMARY KEY,
+
+    status VARCHAR(20) NOT NULL,
+    user_id INTEGER NOT NULL REFERENCES Users(id),
+    imported_count INTEGER
+);
+
 CREATE TABLE IF NOT EXISTS Coordinates (
     id SERIAL PRIMARY KEY,
 
