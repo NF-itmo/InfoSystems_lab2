@@ -3,6 +3,7 @@ import { BookCreaturesFeed } from "@/03-widgets/book-creaures-feed";
 import { CoordinatesFeed } from "@/03-widgets/coordinates-feed";
 import { MagicCitiesFeed } from "@/03-widgets/magic-cities-feed";
 import { RingsFeed } from "@/03-widgets/rings-feed";
+import { ImportHistory } from "@/03-widgets/import-history";
 
 type Props = {};
 
@@ -16,6 +17,7 @@ export const HomePage = (
         <CoordinatesFeed/>
         <MagicCitiesFeed/>
         <RingsFeed/>
+        <ImportHistory/>
       </main>
     </div>
   )

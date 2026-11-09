@@ -14,3 +14,9 @@ body {
   
   min-height: 100vh;
 }
+
+.accessMessage {
+  padding: 48px 12px;
+  color: var(--text-secondary);
+  text-align: center;
+}

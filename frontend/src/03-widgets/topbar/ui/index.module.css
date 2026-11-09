@@ -1,0 +1,41 @@
+.topbarWrapper {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px, 520px) 1fr;
+  align-items: center;
+  gap: 16px;
+
+  width: 100%;
+  padding: 2px 6px;
+
+  border-bottom: 1px solid hsl(0, 0%, 20%);
+}
+
+.logoText {
+  justify-self: start;
+  cursor: pointer;
+}
+
+.navSection {
+  display: flex;
+  justify-self: end;
+  align-items: center;
+  gap: 10px;
+}
+
+.navOption {
+  color: hsl(0, 0%, 40%);
+  cursor: pointer;
+  transition: color 0.2s ease-out;
+}
+
+.navOption:hover {
+  color: hsl(0, 0%, 90%);
+}
+
+@media (max-width: 640px) {
+  .topbarWrapper {
+    grid-template-columns: 1fr auto;
+    gap: 3px 12px;
+    padding-bottom: 3px;
+  }
+}

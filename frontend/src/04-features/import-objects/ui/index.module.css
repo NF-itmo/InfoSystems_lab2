@@ -1,0 +1,20 @@
+.fileField {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.fileField input {
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.fileName {
+  overflow: hidden;
+  color: var(--text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
