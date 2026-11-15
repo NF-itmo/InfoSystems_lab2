@@ -17,6 +17,7 @@ public class DatabaseConstraintViolationMapper
 
     private static final Logger logger = Logger.getLogger(DatabaseConstraintViolationMapper.class.getName());
     private static final String FOREIGN_KEY_VIOLATION = "23503";
+    private static final String UNIQUE_VIOLATION = "23505";
 
     @Override
     public Response toResponse(DataException exception) {
@@ -25,6 +26,15 @@ public class DatabaseConstraintViolationMapper
                     .type(MediaType.APPLICATION_JSON)
                     .entity(new ErrorResponse(
                             "Cannot delete the object because it is referenced by another object"
+                    ))
+                    .build();
+        }
+
+        if (hasUniqueViolation(exception)) {
+            return Response.status(Response.Status.CONFLICT)
+                    .type(MediaType.APPLICATION_JSON)
+                    .entity(new ErrorResponse(
+                            "An object with this unique value already exists"
                     ))
                     .build();
         }
@@ -38,11 +48,19 @@ public class DatabaseConstraintViolationMapper
     }
 
     private boolean hasForeignKeyViolation(Throwable exception) {
+        return hasSqlState(exception, FOREIGN_KEY_VIOLATION);
+    }
+
+    private boolean hasUniqueViolation(Throwable exception) {
+        return hasSqlState(exception, UNIQUE_VIOLATION);
+    }
+
+    private boolean hasSqlState(Throwable exception, String sqlState) {
         Throwable cause = exception;
 
         while (cause != null) {
             if (cause instanceof SQLException sqlException
-                    && FOREIGN_KEY_VIOLATION.equals(sqlException.getSQLState())) {
+                    && sqlState.equals(sqlException.getSQLState())) {
                 return true;
             }
 

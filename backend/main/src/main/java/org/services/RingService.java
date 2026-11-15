@@ -4,7 +4,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.events.DataChangePublisher;
+import org.exceptions.ConflictException;
+import org.models.Ring;
 import org.repository.RingRepository;
+import org.repository.RingTransactionRepository;
 import org.services.DTO.RingDto;
 
 import java.util.List;
@@ -13,10 +16,13 @@ import java.util.Optional;
 @ApplicationScoped
 public class RingService {
     @Inject private RingRepository ringRepository;
+    @Inject private RingTransactionRepository ringTransactionRepository;
     @Inject private DataChangePublisher dataChangePublisher;
 
     @Transactional
     public RingDto create(RingDto dto) {
+        ringTransactionRepository.useSerializableIsolation();
+        ensureNameAvailable(dto.getName());
         RingDto createdRing = RingDto.fromModel(
                 ringRepository.insert(dto.toModel())
         );
@@ -33,6 +39,18 @@ public class RingService {
     public Optional<RingDto> findByName(String name) {
         return ringRepository.findById(name)
                 .map(RingDto::fromModel);
+    }
+
+    @Transactional
+    public Optional<Ring> findByNameIgnoringCase(String name) {
+        return ringRepository.findByNameIgnoringCase(name);
+    }
+
+    @Transactional
+    public void ensureNameAvailable(String name) {
+        if (findByNameIgnoringCase(name).isPresent()) {
+            throw new ConflictException("A ring with this name already exists");
+        }
     }
 
     @Transactional

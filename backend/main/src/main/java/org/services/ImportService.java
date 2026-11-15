@@ -30,6 +30,7 @@ public class ImportService {
     @Inject private CoordinateRepository coordinateRepository;
     @Inject private MagicCityRepository magicCityRepository;
     @Inject private RingRepository ringRepository;
+    @Inject private RingService ringService;
     @Inject private DataChangePublisher dataChangePublisher;
 
     @Transactional
@@ -101,10 +102,7 @@ public class ImportService {
         document.getRings().forEach(value -> {
             Ring ring = value.toServiceDto().toModel();
 
-            if (ringRepository.findById(ring.getName()).isPresent()) {
-                throw new BadRequestException("A ring with this name already exists");
-            }
-
+            ringService.ensureNameAvailable(ring.getName());
             ringRepository.insert(ring);
         });
 
@@ -135,7 +133,7 @@ public class ImportService {
             return null;
         }
 
-        return ringRepository.findById(dto.getName())
+        return ringService.findByNameIgnoringCase(dto.getName())
                 .map(existing -> {
                     if (!isSameRing(existing, dto)) {
                         throw new BadRequestException(

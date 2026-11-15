@@ -61,7 +61,7 @@ public class MagicCityImportRequest {
             return LocalDateTime.parse(establishmentDate);
         } catch (DateTimeParseException exception) {
             throw new BadRequestException(
-                    "establishmentDate must be an ISO-8601 local date-time"
+                    "establishmentDate must be ISO local date-time"
             );
         }
     }
