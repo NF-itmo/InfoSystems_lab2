@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: "horse_ate_green_guinea_pig"
     volumes:
       - infsys1_db_data:/var/lib/postgresql/data
-      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro,Z
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "db", "-U", "admin"]
       interval: 5s
