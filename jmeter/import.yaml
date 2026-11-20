@@ -1,0 +1,4 @@
+rings:
+  - name: unique-ring
+    weight: 10
+    power: 10

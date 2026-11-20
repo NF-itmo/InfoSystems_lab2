@@ -1,1 +1,5 @@
 docker-compose.prod.yaml
+
+jmeter.log
+jmeter/report-*
+jmeter/results-*

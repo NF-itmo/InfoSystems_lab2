@@ -18,6 +18,7 @@ import org.controllers.DTO.ring.CreateRingRequest;
 import org.controllers.DTO.ring.CreateRingResponse;
 import org.controllers.DTO.ring.GetRingResponse;
 import org.controllers.DTO.ring.UpdateRingRequest;
+import org.jwtProcessing.filter.JwtSecured;
 import org.services.RingService;
 
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.List;
 @Path("/rings")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@JwtSecured
 public class RingController {
     @Inject private RingService ringService;
 
